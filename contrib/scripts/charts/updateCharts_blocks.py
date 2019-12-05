@@ -50,18 +50,18 @@ except FileNotFoundError:
     if isTestnet:
         supply_data["time_axis"] = [1454124731, 1488951557]
         supply_data["lastBlockHash"] = '0000041e482b9b9691d98eefb48473405c0b8ec31b76df3797c74a78680ef818'
-        supply_data["pivSupply"] = [0.0, 24810000.99975790]
+        supply_data["vitsupply"] = [0.0, 24810000.99975790]
     else:
         supply_data["time_axis"] = [1454124731, 1454186818]
         supply_data["lastBlockHash"] = '0000000a86f23294329c83d69e254a4f8d127b6b899a14b147885740c4be1713'
-        supply_data["pivSupply"] = [0.0, 84751.0]
-    zpivSupply = {}
+        supply_data["vitsupply"] = [0.0, 84751.0]
+    zvitsupply = {}
     zpivMints = {}
     for k in ZC_DENOMS:
         denom_key = "denom_%d" % k
-        zpivSupply[denom_key] = [0, 0]
+        zvitsupply[denom_key] = [0, 0]
         zpivMints[denom_key] = [0, 0]
-    supply_data["zpivSupply"] = zpivSupply
+    supply_data["zvitsupply"] = zvitsupply
     supply_data["zpivMints"] = zpivMints
 
     network_data = {}
@@ -92,10 +92,10 @@ if (
 ):
     # remove 3 datapoints to be extra safe
     supply_data["lastBlockHash"] = last_block_hash
-    for data_key in ["zpivSupply", "zpivMints"]:
+    for data_key in ["zvitsupply", "zpivMints"]:
         for denom_key in supply_data[data_key]:
             supply_data[data_key][denom_key] = supply_data[data_key][denom_key][:-3]
-    for data_key in ["blocks_axis", "time_axis", "pivSupply"]:
+    for data_key in ["blocks_axis", "time_axis", "vitsupply"]:
         supply_data[data_key] = supply_data[data_key][:-3]
 
     for data_key in network_data:
@@ -113,9 +113,9 @@ while supply_data["blocks_axis"][-1] + 100 <= blockCount:
     block = conn.getblock(supply_data["lastBlockHash"], True)
 
     # get PIV supply and zPIV supply
-    supply_data["pivSupply"].append(float(block["moneysupply"]))
+    supply_data["vitsupply"].append(float(block["moneysupply"]))
     for k in ZC_DENOMS:
-        supply_data["zpivSupply"]["denom_%d" % k].append(int(block["zPIVsupply"][str(k)]))
+        supply_data["zvitsupply"]["denom_%d" % k].append(int(block["zPIVsupply"][str(k)]))
 
     # get time, blocktime, blocksize and difficulty
     supply_data["time_axis"].append(int(block["time"]))

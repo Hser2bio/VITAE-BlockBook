@@ -28,6 +28,7 @@ import (
 	"blockbook/bchain/coins/ravencoin"
 	"blockbook/bchain/coins/vertcoin"
 	"blockbook/bchain/coins/viacoin"
+	"blockbook/bchain/coins/vitae"
 	"blockbook/bchain/coins/vipstarcoin"
 	"blockbook/bchain/coins/xzc"
 	"blockbook/bchain/coins/zec"
@@ -89,6 +90,7 @@ func init() {
 	BlockChainFactories["Viacoin"] = viacoin.NewViacoinRPC
 	BlockChainFactories["Qtum Testnet"] = qtum.NewQtumRPC
 	BlockChainFactories["NULS"] = nuls.NewNulsRPC
+	BlockChainFactories["Vitae"] = vitae.NewVitaeRPC
 	BlockChainFactories["VIPSTARCOIN"] = vipstarcoin.NewVIPSTARCOINRPC
 	BlockChainFactories["ZelCash"] = zec.NewZCashRPC
 	BlockChainFactories["Ravencoin"] = ravencoin.NewRavencoinRPC

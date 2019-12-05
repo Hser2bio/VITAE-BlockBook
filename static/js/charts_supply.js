@@ -40,8 +40,8 @@ const SPEND_COLOR = ['rgba(0, 0, 255, 0.8)', 'rgba(0, 0, 255, 0.3)'];
 // blocks data
 const block_data = JSON.parse(supply_data_Json);
 const LAST_BLOCK_NUM = block_data.blocks_axis[block_data.blocks_axis.length-1];
-const pivsupplydata = block_data.pivSupply;
-const zpivsupplydata = block_data.zpivSupply;
+const vitsupplydata = block_data.vitsupply;
+const zvitsupplydata = block_data.zvitsupply;
 const mintsupplydata = block_data.zpivMints;
 let spendsupplydata = {};
 
@@ -84,23 +84,23 @@ function GetSupplyDataPoints(bl_from, bl_to, denom_key) {
     var rangeObj = {
         blocks_axis: [],
         time_axis: [],
-        pivSupply: [],
-        zpivSupply: {},
+        vitsupply: [],
+        zvitsupply: {},
         zpivMints: {},
         zpivSpends: {}
     };
 
     if (denom_key == "total") {
         for (const d_key of DENOM_KEYS) {
-            rangeObj.zpivSupply[d_key] = [];
+            rangeObj.zvitsupply[d_key] = [];
             rangeObj.zpivMints[d_key] = [];
             rangeObj.zpivSpends[d_key] = [];
         }
-        rangeObj.zpivSupply.total = [];
+        rangeObj.zvitsupply.total = [];
         rangeObj.zpivMints.total = [];
         rangeObj.zpivSpends.total = [];
     } else {
-        rangeObj.zpivSupply[denom_key] = [];
+        rangeObj.zvitsupply[denom_key] = [];
         rangeObj.zpivMints[denom_key] = [];
         rangeObj.zpivSpends[denom_key] = [];
     }
@@ -142,24 +142,24 @@ function GetSupplyDataPoints(bl_from, bl_to, denom_key) {
             // add data to rangeObj
             rangeObj.blocks_axis.push(block_data.blocks_axis[i]);
             rangeObj.time_axis.push(new Date(block_data.time_axis[i]*1000).toLocaleString());
-            rangeObj.pivSupply.push(block_data.pivSupply[i]);
+            rangeObj.vitsupply.push(block_data.vitsupply[i]);
             if (denom_key == "total") {
                 for (const d_key of DENOM_KEYS) {
-                    rangeObj.zpivSupply[d_key].push(zpivsupplydata[d_key][i]);
+                    rangeObj.zvitsupply[d_key].push(zvitsupplydata[d_key][i]);
                     rangeObj.zpivMints[d_key].push(total_mints[d_key]);
                     rangeObj.zpivSpends[d_key].push(total_spends[d_key]);
                     // reset block-range objects sums
                     total_mints[d_key] = 0;
                     total_spends[d_key] = 0;
                 }
-                rangeObj.zpivSupply.total.push(zpivsupplydata.total[i]);
+                rangeObj.zvitsupply.total.push(zvitsupplydata.total[i]);
                 rangeObj.zpivMints.total.push(total_mints.total);
                 rangeObj.zpivSpends.total.push(total_spends.total);
                 // reset block-range objects sums
                 total_mints.total = 0;
                 total_spends.total = 0;
             } else {
-                rangeObj.zpivSupply[denom_key].push(zpivsupplydata[denom_key][i]);
+                rangeObj.zvitsupply[denom_key].push(zvitsupplydata[denom_key][i]);
                 rangeObj.zpivMints[denom_key].push(total_mints[denom_key]);
                 rangeObj.zpivSpends[denom_key].push(total_spends[denom_key]);
                 // reset block-range objects sums
@@ -179,16 +179,16 @@ function SetSupplyChartRange(val_from, val_to, denom_key) {
     SetDataLabel(supplyChart[denom_key], rangeObj);
     if (denom_key != "total") {
         // single denom chart
-        supplyChart[denom_key].data.datasets[0].data = rangeObj.zpivSupply[denom_key];
+        supplyChart[denom_key].data.datasets[0].data = rangeObj.zvitsupply[denom_key];
         supplyChart[denom_key].data.datasets[1].data = rangeObj.zpivMints[denom_key];
         supplyChart[denom_key].data.datasets[2].data = rangeObj.zpivSpends[denom_key];
     } else {
-        supplyChart[denom_key].data.datasets[0].data = rangeObj.pivSupply;
-        supplyChart[denom_key].data.datasets[1].data = rangeObj.zpivSupply[denom_key];
+        supplyChart[denom_key].data.datasets[0].data = rangeObj.vitsupply;
+        supplyChart[denom_key].data.datasets[1].data = rangeObj.zvitsupply[denom_key];
         supplyChart[denom_key].data.datasets[2].data = rangeObj.zpivMints[denom_key];
         supplyChart[denom_key].data.datasets[3].data = rangeObj.zpivSpends[denom_key];
         for (let i = 0; i < DENOM_KEYS.length; i++) {
-            supplyChart[denom_key].data.datasets[4+i].data = rangeObj.zpivSupply[DENOM_KEYS[i]];
+            supplyChart[denom_key].data.datasets[4+i].data = rangeObj.zvitsupply[DENOM_KEYS[i]];
         }
     }
     // draw chart
@@ -204,7 +204,7 @@ function SetZpivAmountChartRange(val_from, val_to) {
     // update chart
     SetDataLabel(zpivamountChart, rangeObj);
     for (let i = 0; i < DENOM_KEYS.length; i++) {
-        zpivamountChart.data.datasets[i].data = rangeObj.zpivSupply[DENOM_KEYS[i]].map(
+        zpivamountChart.data.datasets[i].data = rangeObj.zvitsupply[DENOM_KEYS[i]].map(
             y => (y / DENOM_VALUES[DENOM_KEYS[i]])
         );
     }
@@ -231,8 +231,8 @@ function ComputeSpends() {
     }
     for (let i = 1; i < block_data.blocks_axis.length; i++) {
         for (const denom_key of DENOM_KEYS) {
-            let supply_delta = (zpivsupplydata[denom_key][i] -
-                zpivsupplydata[denom_key][i-1]);
+            let supply_delta = (zvitsupplydata[denom_key][i] -
+                zvitsupplydata[denom_key][i-1]);
             spendsupplydata[denom_key].push((mintsupplydata[denom_key][i] -
                 supply_delta/DENOM_VALUES[denom_key])
             );
@@ -241,19 +241,19 @@ function ComputeSpends() {
 }
 
 function ComputeTotals() {
-    zpivsupplydata.total = [];
+    zvitsupplydata.total = [];
     mintsupplydata.total = [];
     spendsupplydata.total = [];
     for (let i = 0; i < block_data.blocks_axis.length; i++) {
-        zpivSupply_total = 0;
+        zvitsupply_total = 0;
         zpivMints_total = 0;
         zpivSpends_total = 0;
         for (const denom_key of DENOM_KEYS) {
-            zpivSupply_total += zpivsupplydata[denom_key][i];
+            zvitsupply_total += zvitsupplydata[denom_key][i];
             zpivMints_total += mintsupplydata[denom_key][i];
             zpivSpends_total += spendsupplydata[denom_key][i];
         }
-        zpivsupplydata.total.push(zpivSupply_total);
+        zvitsupplydata.total.push(zvitsupply_total);
         mintsupplydata.total.push(zpivMints_total);
         spendsupplydata.total.push(zpivSpends_total);
     }
@@ -365,10 +365,10 @@ function InitAmountChart() {
 function InitZPSDoughnut() {
     zpivsupplynowChart = InitDoughnutChart(zpivsupplynow_ctx);
     const rangeObj = GetSupplyDataPoints((block_data.blocks_axis.length - 1), (block_data.blocks_axis.length - 1), "total");
-    let len = rangeObj.zpivSupply[DENOM_KEYS[0]].length;
+    let len = rangeObj.zvitsupply[DENOM_KEYS[0]].length;
     zpivsupplynowChart.data.datasets = [
         {
-            data: DENOM_KEYS.map(x => (rangeObj.zpivSupply[x][len-1]/DENOM_VALUES[x])),
+            data: DENOM_KEYS.map(x => (rangeObj.zvitsupply[x][len-1]/DENOM_VALUES[x])),
             borderColor: DENOM_KEYS.map(x => DENOM_COLORS[x]),
             backgroundColor: DENOM_KEYS.map(x => DENOM_COLORS2[x])
         }
