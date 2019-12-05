@@ -25,7 +25,7 @@
       "version": "4.4.0.3",
       "binary_url": "https://github.com/VitaeTeam/Vitae/releases/download/v4.4.0.3/vitae-4.4.0.3-linux.tar.gz",
       "verification_type": "sha256",
-      "verification_source": "6362BD50BA0E867F683A0F0346F87E6BD0FB139E0FB16E8B7FB3E955C4B03F30",
+      "verification_source": "6362bd50ba0e867f683a0f0346f87e6bd0fb139e0fb16e8b7fb3e955c4b03f30",
       "extract_command": "tar -C backend --strip 1 -xf",
       "exclude_files": [
         "bin/vitae-qt"
