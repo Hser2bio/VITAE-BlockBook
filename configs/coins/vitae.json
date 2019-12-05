@@ -26,7 +26,7 @@
       "binary_url": "https://github.com/VitaeTeam/Vitae/releases/download/v4.4.0.3/vitae-4.4.0.3-linux.tar.gz",
       "verification_type": "sha256",
       "verification_source": "6362bd50ba0e867f683a0f0346f87e6bd0fb139e0fb16e8b7fb3e955c4b03f30",
-      "extract_command": "tar -C backend --strip 1 xzf",
+      "extract_command": "tar -C backend xzf",
       "exec_command_template": "{{.Env.BackendInstallPath}}/{{.Coin.Alias}}/vitaed -datadir={{.Env.BackendDataPath}}/{{.Coin.Alias}}/backend -conf={{.Env.BackendInstallPath}}/{{.Coin.Alias}}/{{.Coin.Alias}}.conf -pid=/run/{{.Coin.Alias}}/{{.Coin.Alias}}.pid",
       "logrotate_files_template": "{{.Env.BackendDataPath}}/{{.Coin.Alias}}/backend/*.log",
       "postinst_script_template": "",
