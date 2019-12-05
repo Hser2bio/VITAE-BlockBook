@@ -44,7 +44,7 @@ func (b *VitaeRPC) Initialize() error {
 	params := GetChainParams(chainName)
 
 	// always create parser
-	b.Parser = NewPivXParser(params, b.ChainConfig)
+	b.Parser = NewVitaeParser(params, b.ChainConfig)
 
 	// parameters for getInfo request
 	if params.Net == MainnetMagic {
